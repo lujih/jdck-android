@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Context context;
 
-    private Button addBtn, delBtn, inputBtn, getCookieBtn, clearCookieBtn;
+    private Button addBtn, delBtn, inputBtn, getCookieBtn, clearCookieBtn,sendCK;
 
     private Spinner phoneSpinner;
 
@@ -241,9 +241,9 @@ public class MainActivity extends AppCompatActivity {
             } break;
             case 3: {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setMessage("@XanderYe 版权所有");
+                builder.setMessage("@XanderYe 版权所有 @yclown修改");
                 builder.setPositiveButton("项目页面", (dialog, which) -> {
-                    Uri uri = Uri.parse("https://github.com/XanderYe/jdck-android");
+                    Uri uri = Uri.parse("https://github.com/yclown/jdck-android");
                     Intent intent = new Intent();
                     intent.setAction("android.intent.action.VIEW");
                     intent.setData(uri);
@@ -377,8 +377,10 @@ public class MainActivity extends AppCompatActivity {
         ExecutorService singleThreadExecutor = Executors.newSingleThreadExecutor();
         singleThreadExecutor.execute(() -> {
             Looper.prepare();
+
+
             try {
-                List<QlEnv> qlEnvList = QinglongUtil.getEnvList(qlInfo);
+                List<QlEnv> qlEnvList = QinglongUtil.getEnvList(qlInfo,"");
                 Config.getInstance().setQlEnvList(qlEnvList);
                 Config.getInstance().setQlInfo(qlInfo);
                 Toast.makeText(this, "青龙token有效", Toast.LENGTH_SHORT).show();
@@ -423,6 +425,7 @@ public class MainActivity extends AppCompatActivity {
                 Looper.prepare();
                 try {
                     boolean success = QinglongUtil.saveEnv(qlInfo, finalTargetEnv);
+                    QinglongUtil.EableEnv(qlInfo,finalTargetEnv);
                     if (success) {
                         Toast.makeText(this, "更新cookie成功", Toast.LENGTH_SHORT).show();
                     }

@@ -32,11 +32,14 @@
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-            <TextView android:layout_width="0dp"
-                      android:layout_weight="1.0"
-                      android:layout_height="wrap_content"
-                      android:gravity="right"
-                      android:text="@string/ql_username_text"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:gravity="right"
+                android:text="@string/ql_username_text"
+                tools:text="ClientID" />
             <EditText
                     android:layout_width="0dp"
                     android:layout_weight="3.0"
@@ -49,11 +52,14 @@
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-            <TextView android:layout_width="0dp"
-                      android:layout_weight="1.0"
-                      android:layout_height="wrap_content"
-                      android:gravity="right"
-                      android:text="@string/ql_password_text"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:gravity="right"
+                android:text="@string/ql_password_text"
+                tools:text="ClientSecret" />
             <EditText
                     android:layout_width="0dp"
                     android:layout_weight="3.0"
@@ -66,25 +72,8 @@
         <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            <TextView android:layout_width="0dp"
-                      android:layout_weight="1.0"
-                      android:layout_height="wrap_content"
-                      android:gravity="right"
-                      android:text="@string/ql_token_text"/>
-            <EditText
-                    android:layout_width="0dp"
-                    android:layout_weight="3.0"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="token登录优先"
-                    android:id="@+id/tokenText"
-            />
-        </LinearLayout>
-        <CheckBox android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:id="@+id/oldVersionCheckBox"
-                  android:text="@string/ql_old_version_text" android:clickable="true" android:checked="true"/>
+                android:layout_height="wrap_content"/>
+
         <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"

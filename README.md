@@ -1,8 +1,16 @@
 # 获取京东cookie程序
 
 ## 说明
+v2
+青龙面板 获取京东cookie使用 
 
-本程序只是简化了打开手机版网页、输入手机号、获取cookie步骤，并不能一键扫码登录获取。鉴于PC网页验证码老是错误，于是开发了安卓版。
+原项目 地址(https://github.com/XanderYe/jdck-android)
+
+## 优化
+* 修改青龙面板的对应的接口地址
+* 使用ClientID和ClientSecret进行接口对接
+* 自动启用发送过去的脚本
+
 
 ## 功能
 * 保存/删除手机号
@@ -12,9 +20,11 @@
 * 支持青龙面板登录及更新cookie
 * 支持短信验证码自动识别
 
+
+
 ## 界面展示
 
 ![](doc/gui.jpg)
 
 ## PC版
-[jd-cookie](https://github.com/XanderYe/jd-cookie)
+[JD_Get](https://github.com/yclown/ql_jd_cookie)

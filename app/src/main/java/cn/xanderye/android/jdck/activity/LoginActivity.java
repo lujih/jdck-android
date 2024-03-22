@@ -24,9 +24,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * @author XanderYe
+ * @origin XanderYe
+ * @author yclown
  * @description:
- * @date 2022/5/11 13:39
+ * @date 2024/3/22 11:00
  */
 public class LoginActivity extends AppCompatActivity {
 
@@ -34,11 +35,10 @@ public class LoginActivity extends AppCompatActivity {
 
     private SharedPreferences config;
 
-    private EditText addressText, usernameText, passwordText, tokenText;
+    private EditText addressText, usernameText, passwordText;
 
     private Button loginBtn, cancelBtn;
 
-    private CheckBox oldVersionCheckBox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,52 +56,36 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         addressText = findViewById(R.id.addressText);
-        addressText.setText(qlInfo.getAddress());
         usernameText = findViewById(R.id.usernameText);
-        usernameText.setText(qlInfo.getUsername());
         passwordText = findViewById(R.id.passwordText);
+        addressText.setText(qlInfo.getAddress());
+        usernameText.setText(qlInfo.getUsername());
         passwordText.setText(qlInfo.getPassword());
-        tokenText = findViewById(R.id.tokenText);
-        oldVersionCheckBox = findViewById(R.id.oldVersionCheckBox);
-        oldVersionCheckBox.setChecked(qlInfo.getOldVersion());
+
 
         loginBtn = findViewById(R.id.loginBtn);
         loginBtn.setOnClickListener(v -> {
             String addr = addressText.getEditableText().toString();
             String user = usernameText.getEditableText().toString();
             String pwd = passwordText.getEditableText().toString();
-            String token = tokenText.getEditableText().toString();
+
             if (StringUtils.isBlank(addr)) {
                 Toast.makeText(this, "地址不能为空", Toast.LENGTH_SHORT).show();
                 return;
             }
-            if (StringUtils.isBlank(token) && StringUtils.isAnyBlank(user, pwd)) {
-                Toast.makeText(this, "账户密码或token必须有一个方式", Toast.LENGTH_SHORT).show();
+            if (StringUtils.isAnyBlank(user, pwd)) {
+                Toast.makeText(this, "请输入必要参数", Toast.LENGTH_SHORT).show();
                 return;
             }
             QlInfo qlInfo2 = new QlInfo();
-            qlInfo2.setAddress(addr.trim());
-            qlInfo2.setUsername(user.trim());
-            qlInfo2.setPassword(pwd.trim());
-            qlInfo2.setToken(token.trim());
-            qlInfo2.setOldVersion(oldVersionCheckBox.isChecked());
+            qlInfo2.setAddress(addr);
+            qlInfo2.setUsername(user);
+            qlInfo2.setPassword(pwd);
+
             ExecutorService singleThreadExecutor = Executors.newSingleThreadExecutor();
             singleThreadExecutor.execute(() -> {
                 Looper.prepare();
                 try {
-                    if (StringUtils.isNotBlank(token)) {
-                        try {
-                            List<QlEnv> qlEnvList = QinglongUtil.getEnvList(qlInfo2);
-                            Config.getInstance().setQlEnvList(qlEnvList);
-                            Config.getInstance().setQlInfo(qlInfo2);
-                            loginSuccess(qlInfo2);
-                        } catch (IOException e) {
-                            Toast.makeText(this, "青龙token已失效，请重新登录", Toast.LENGTH_SHORT).show();
-                        } finally {
-                            Looper.loop();
-                        }
-                        return;
-                    }
                     String tk = QinglongUtil.login(qlInfo2);
                     if (StringUtils.isBlank(tk)) {
                         Toast.makeText(this, "登录失败，token为空", Toast.LENGTH_SHORT).show();
@@ -133,9 +117,6 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences.Editor edit = config.edit();
         edit.putString("qlJSON", JSON.toJSONString(qlInfo));
         edit.apply();
-        // 获取环境变量
-        List<QlEnv> qlEnvList = QinglongUtil.getEnvList(qlInfo);
-        Config.getInstance().setQlEnvList(qlEnvList);
         this.finish();
     }
 }
