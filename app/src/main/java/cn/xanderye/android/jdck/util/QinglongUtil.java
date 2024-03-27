@@ -132,8 +132,10 @@ public class QinglongUtil {
         headers.put("Authorization", "Bearer " + qlInfo.getToken());
         HttpUtil.ResEntity resEntity;
         if (qlEnv.get_id() != null) {
-            String ids="["+qlEnv.get_id()+"]";
-            resEntity = HttpUtil.doPutJSON(url, headers, null, ids);
+            JSONArray ja=new JSONArray();
+            ja.add(qlEnv.get_id());
+
+            resEntity = HttpUtil.doPutJSON(url, headers, null, ja.toJSONString());
             if (resEntity.getStatusCode() != 200) {
                 throw new IOException("启用 服务器" + resEntity.getStatusCode() + "错误");
             }

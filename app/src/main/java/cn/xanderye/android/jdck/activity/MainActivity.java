@@ -402,8 +402,16 @@ public class MainActivity extends AppCompatActivity {
     private void updateCookie(String cookie) {
         Map<String, Object> map = JDUtil.formatCookies(cookie);
         String ptPin = (String) map.get("pt_pin");
-        List<QlEnv> qlEnvList = Config.getInstance().getQlEnvList();
         QlInfo qlInfo = Config.getInstance().getQlInfo();
+        List<QlEnv> qlEnvList =new ArrayList<QlEnv>();
+        try{
+            qlEnvList = QinglongUtil.getEnvList(qlInfo,ptPin);;
+        }catch (Exception e){
+            Toast.makeText(this, "更新cookie成功", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
         if (!qlEnvList.isEmpty()) {
             QlEnv targetEnv = null;
             for (QlEnv qlEnv : qlEnvList) {
