@@ -186,10 +186,11 @@ public class MainActivity extends AppCompatActivity {
         // 重置cookie刷新页面按钮
         clearCookieBtn = findViewById(R.id.clearCookieBtn);
         clearCookieBtn.setOnClickListener(v -> {
+//            updateCookie("pt_key=test;pt_pin=Yclown;");
             resetWebview();
         });
 
-        // 检查token有效
+        // 检查token有效 同时获取环境变量
         checkQlLogin();
     }
 
@@ -403,46 +404,40 @@ public class MainActivity extends AppCompatActivity {
         Map<String, Object> map = JDUtil.formatCookies(cookie);
         String ptPin = (String) map.get("pt_pin");
         QlInfo qlInfo = Config.getInstance().getQlInfo();
-        List<QlEnv> qlEnvList =new ArrayList<QlEnv>();
-        try{
-            qlEnvList = QinglongUtil.getEnvList(qlInfo,ptPin);;
-        }catch (Exception e){
-            Toast.makeText(this, "更新cookie成功", Toast.LENGTH_SHORT).show();
-            return;
+        List<QlEnv> qlEnvList =Config.getInstance().getQlEnvList();
+        if(qlEnvList==null){
+            qlEnvList=new ArrayList<QlEnv>();
         }
-
-
-        if (!qlEnvList.isEmpty()) {
-            QlEnv targetEnv = null;
-            for (QlEnv qlEnv : qlEnvList) {
-                Map<String, Object> envMap = JDUtil.formatCookies(qlEnv.getValue());
-                String tempPin = (String) envMap.get("pt_pin");
-                if(ptPin.equals(tempPin)) {
-                    targetEnv = qlEnv;
-                    break;
-                }
+        QlEnv targetEnv = null;
+        for (QlEnv qlEnv : qlEnvList) {
+            Map<String, Object> envMap = JDUtil.formatCookies(qlEnv.getValue());
+            String tempPin = (String) envMap.get("pt_pin");
+            if(ptPin.equals(tempPin)) {
+                targetEnv = qlEnv;
+                break;
             }
-            if (targetEnv == null) {
-                targetEnv = new QlEnv();
-                targetEnv.setName("JD_COOKIE");
-            }
-            targetEnv.setValue(cookie);
-            ExecutorService singleThreadExecutor = Executors.newSingleThreadExecutor();
-            QlEnv finalTargetEnv = targetEnv;
-            singleThreadExecutor.execute(() -> {
-                Looper.prepare();
-                try {
-                    boolean success = QinglongUtil.saveEnv(qlInfo, finalTargetEnv);
-                    QinglongUtil.EableEnv(qlInfo,finalTargetEnv);
-                    if (success) {
-                        Toast.makeText(this, "更新cookie成功", Toast.LENGTH_SHORT).show();
-                    }
-                } catch (IOException e) {
-                    Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-                Looper.loop();
-            });
-            singleThreadExecutor.shutdown();
         }
+        if (targetEnv == null) {
+            targetEnv = new QlEnv();
+            targetEnv.setName("JD_COOKIE");
+        }
+        targetEnv.setValue(cookie);
+        ExecutorService singleThreadExecutor = Executors.newSingleThreadExecutor();
+        QlEnv finalTargetEnv = targetEnv;
+        singleThreadExecutor.execute(() -> {
+            Looper.prepare();
+            try {
+                boolean success = QinglongUtil.saveEnv(qlInfo, finalTargetEnv);
+                QinglongUtil.EableEnv(qlInfo,finalTargetEnv);
+                if (success) {
+                    Toast.makeText(this, "更新cookie成功", Toast.LENGTH_SHORT).show();
+                }
+            } catch (IOException e) {
+                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+            Looper.loop();
+        });
+        singleThreadExecutor.shutdown();
+
     }
 }

@@ -94,6 +94,10 @@ public class LoginActivity extends AppCompatActivity {
                     }
                     qlInfo2.setToken(tk);
                     loginSuccess(qlInfo2);
+                    //登陆后 更新环境变量
+                    List<QlEnv> qlEnvList = QinglongUtil.getEnvList(qlInfo2,"");
+                    Config.getInstance().setQlEnvList(qlEnvList);
+
                 } catch (IOException e) {
                     Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
                 } finally {
