@@ -90,7 +90,7 @@ public class QinglongUtil {
      * @date 2024/3/22 11:00
      */
     public static boolean saveEnv(QlInfo qlInfo, QlEnv qlEnv) throws IOException {
-        String url = qlInfo.getAddress() + "open/envs";;
+        String url = qlInfo.getAddress() + "/open/envs";;
         Map<String, Object> headers = new HashMap<>();
         headers.put("Authorization", "Bearer " + qlInfo.getToken());
         JSONObject params = new JSONObject();
