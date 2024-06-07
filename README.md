@@ -1,5 +1,8 @@
 # 青龙面板 京东cookie 助手 安卓版
 
+## PC版
+[JD_Get](https://github.com/yclown/ql_jd_cookie)
+
 ## 说明
 v2
 青龙面板 获取京东cookie使用 
@@ -23,5 +26,4 @@ v2
 
 ![](doc/gui.jpg)
 
-## PC版
-[JD_Get](https://github.com/yclown/ql_jd_cookie)
+
