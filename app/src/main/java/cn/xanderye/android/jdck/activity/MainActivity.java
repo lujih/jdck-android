@@ -151,16 +151,27 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "请先选择账号", Toast.LENGTH_SHORT).show();
                 return;
             }
-            String execJs = "var account='" + selectedPhone + "';";
+            String[] info=  selectedPhone.split(" ");
+            String Phone=info[0];
+            String execJs = "var account='" + Phone + "';";
             execJs += "document.getElementsByClassName('policy_tip-checkbox')[0].click();";
             execJs += "var evt=new InputEvent('input',{inputType:'insertText',data:account,dataTransfer:null,isComposing:false});";
             execJs += "document.getElementById('username').value=account;";
             execJs += "document.getElementById('username').dispatchEvent(evt);";
-            Matcher matcher = PHONE_PATTERN.matcher(selectedPhone);
+            Matcher matcher = PHONE_PATTERN.matcher(Phone);
             if (matcher.matches()) {
                 execJs += "document.getElementsByClassName('acc-input mobile J_ping')[0].value=account;";
                 execJs += "document.getElementsByClassName('acc-input mobile J_ping')[0].dispatchEvent(evt);";
             }
+            if(info.length>1){
+                String Pwd=info[1];
+                execJs += "var password='" + Pwd + "';";
+                execJs += "var evt=new InputEvent('input',{inputType:'insertText',data:password,dataTransfer:null,isComposing:false});";
+                execJs += "document.getElementById('pwd').value=password;";
+                execJs += "document.getElementById('pwd').dispatchEvent(evt);";
+                execJs += "document.querySelector('#app>div>a').click()";
+            }
+
             webView.loadUrl("javascript:" + execJs);
         });
         // 获取cookie按钮
