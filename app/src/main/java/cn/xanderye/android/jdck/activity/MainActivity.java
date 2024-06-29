@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
         phoneSpinner = findViewById(R.id.phoneSpinner);
         String phoneStr = config.getString("phoneStr", null);
         if (phoneStr != null) {
-            String[] phones = phoneStr.split(",");
+            String[] phones = phoneStr.split("\r\n");
             phoneSet = new HashSet<>(Arrays.asList(phones));
             updatePhone();
         }
@@ -350,7 +350,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void updatePhone() {
         // 更新账号
-        String newPhoneStr = phoneSet.stream().collect(Collectors.joining(","));
+        String newPhoneStr = phoneSet.stream().collect(Collectors.joining("\r\n"));
         SharedPreferences.Editor edit = config.edit();
         edit.putString("phoneStr", newPhoneStr);
         edit.apply();
